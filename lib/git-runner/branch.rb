@@ -27,7 +27,7 @@ module GitRunner
       # Use git to grep the current branch for instruction lines within the specific instruction file
       output = Command.execute(
         "cd #{repository_path}",
-        "git grep '^#{Configuration.instruction_prefix}' #{name}:#{Configuration.instruction_file}"
+        "git grep '^#{Configuration.instruction_prefix}' #{name}:#{Configuration.instruction_file} || true"
       )
 
       # Process the output to generate instructions
