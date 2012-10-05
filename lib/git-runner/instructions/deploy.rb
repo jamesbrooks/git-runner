@@ -37,10 +37,6 @@ module GitRunner
         args.split(/\s+/)
       end
 
-      def rvm_string
-        "#{Configuration.rvm_ruby_version}@git-runner-#{branch.repository_name}-#{branch.name}"
-      end
-
       def missing_capfile?
         !File.exists?("#{clone_directory}/Capfile")
       end

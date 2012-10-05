@@ -12,6 +12,5 @@ module GitRunner
     :instruction_file   => 'config/deploy.rb',
     :instruction_prefix => '# GitRunner:',
     :tmp_directory      => '/tmp/git-runner',
-    :rvm_ruby_version   => '1.9.3'
   }
 end
