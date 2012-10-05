@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>GitRunner by JamesBrooks</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>GitRunner</h1>
+        <p></p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/JamesBrooks/git-runner" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/JamesBrooks/git-runner/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/JamesBrooks/git-runner/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>GitRunner</h1>
+
+<p>GitRunner is a ruby framework to implement and run tasks after code has been pushed to a Git repository. It works by invoking <code>git-runner</code> through <code>hooks/post-update</code> in your remote Git repository.</p>
+
+<p>Configuration for GitRunner is read from a pre-determined file within the repository (at this time, that file is config/deploy.rb but this will soon be configurable). Any instructions detected are then processed and ran.</p>
+
+<p>Instructions are contained within <code>lib/git-runner/instructions</code>, though soon these will be extracted out to separate gems, leaving only the core instructions present. Currently the only <em>real</em> instruction that users will want to run is Deploy, which will checkout your code, run bundler and perform a cap deploy (with multistage support).</p>
+
+<h2>Installation</h2>
+
+<pre><code>$ gem install git-runner
+</code></pre>
+
+<h2>Usage</h2>
+
+<p>Symlink <code>hooks/post-update</code> to <code>git-runner</code>, or if <code>post-update</code> is already in use modify it to run <code>git-runner</code> with the arguments supplied to the hook.</p>
+
+<h2>TODO</h2>
+
+<ul>
+<li>Allow file based configuration (currently configuration is hard-coded)</li>
+<li>Extract our non-core instruction functionality into individual gems (e.g. the Deploy instruction)</li>
+</ul><h2>Contributing</h2>
+
+<ol>
+<li>Fork it</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Added some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create new Pull Request</li>
+</ol>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/JamesBrooks">JamesBrooks</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
