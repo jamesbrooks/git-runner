@@ -4,8 +4,9 @@ module GitRunner
       attr_accessor :branch, :args, :opts
 
 
-      def initialize(args)
+      def initialize(args, opts={})
         self.args = args
+        self.opts = opts
       end
 
       def perform
@@ -28,16 +29,15 @@ module GitRunner
       end
 
       def halt!
-        self.opts ||= {}
         self.opts[:halt] = true
       end
 
       def halt?
-        self.opts && !!self.opts[:halt]
+        !!self.opts[:halt]
       end
 
       def priority?
-        self.opts && !!self.opts[:priority]
+        !!self.opts[:priority]
       end
 
 

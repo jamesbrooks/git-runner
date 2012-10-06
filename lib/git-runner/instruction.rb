@@ -11,13 +11,10 @@ module GitRunner
 
       rescue NameError => e
         # Return a console message instruction to inform the user
-        instruction      = ConsoleMessage.new(Text.red("\u2716 Instruction not found: #{name}"))
-        instruction.opts = {
+        ConsoleMessage.new(Text.red("\u2716 Instruction not found: #{name}"), {
           :halt     => true,
           :priority => true
-        }
-
-        instruction
+        })
       end
     end
 
