@@ -16,10 +16,19 @@ Instructions are contained within `lib/git-runner/instructions`, though soon the
 
 Symlink `hooks/post-update` to `git-runner`, or if `post-update` is already in use modify it to run `git-runner` with the arguments supplied to the hook.
 
+## Configuration
+
+Configuration can be overwritten through a YAML file at either `/etc/git-runner.yml` or `$HOME/.git-runner.yml`. The current configuration options are:
+
+  * **git_executable** (default: '/usr/bin/env git')
+  * **instruction_file** (default: 'config/deploy.rb')
+  * **instruction_prefix** (default: '# GitRunner:')
+  * **tmp_directory** (default: '/tmp/git-runner')
+
 ## TODO
 
-* Allow file based configuration (currently configuration is hard-coded)
 * Extract our non-core instruction functionality into individual gems (e.g. the Deploy instruction)
+* Format README.md nicely
 
 ## Contributing
 
