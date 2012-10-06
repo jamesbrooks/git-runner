@@ -1,6 +1,6 @@
 module GitRunner
   class Instruction
-    class ConsoleMessage < Base
+    class Display < Base
       def perform
         Text.out(message, :heading)
       end

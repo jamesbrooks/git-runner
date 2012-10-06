@@ -10,8 +10,8 @@ module GitRunner
         const_get(name).new(args)
 
       rescue NameError => e
-        # Return a console message instruction to inform the user
-        ConsoleMessage.new(Text.red("\u2716 Instruction not found: #{name}"), {
+        # Display message for missing instruction, halt further execution
+        Display.new(Text.red("\u2716 Instruction not found: #{name}"), {
           :halt     => true,
           :priority => true
         })
