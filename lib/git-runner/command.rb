@@ -24,6 +24,12 @@ module GitRunner
       @history ||= []
     end
 
+    def history_to_s
+      history.map do |result|
+        "Status: #{result.status}; Command: #{result.command}\n#{result.out}\n--------------------\n"
+      end.join
+    end
+
 
   private
     def session

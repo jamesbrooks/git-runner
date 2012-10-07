@@ -18,8 +18,8 @@ module GitRunner
           perform
           Text.new_line
 
-          if halt?
-            raise InstructionHalted.new(self)
+          if opts[:fail]
+            raise Failure.new(self)
           end
         end
       end
@@ -28,16 +28,8 @@ module GitRunner
         true
       end
 
-      def halt!
-        self.opts[:halt] = true
-      end
-
-      def halt?
-        !!self.opts[:halt]
-      end
-
-      def priority?
-        !!self.opts[:priority]
+      def fail!
+        raise Failure.new(self)
       end
 
 

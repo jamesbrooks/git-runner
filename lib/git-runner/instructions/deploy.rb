@@ -21,7 +21,7 @@ module GitRunner
 
         if missing_capfile?
           Text.out(Text.red("Missing Capfile, unable to complete deploy."))
-          halt! && return
+          fail!
         end
 
         prepare_deploy_environment
