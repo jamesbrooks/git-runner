@@ -12,6 +12,11 @@ Instructions are contained within `lib/git-runner/instructions`, though soon the
 
     $ gem install git-runner
 
+### Install any additional modules (you'll want to do this to get any real functionality)
+
+    # Deploys using Capistrano
+    # gem install git-runner-deploy
+
 ## Usage
 
 Symlink `hooks/post-update` to `git-runner`, or if `post-update` is already in use modify it to run `git-runner` with the arguments supplied to the hook.

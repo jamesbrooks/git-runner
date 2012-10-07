@@ -1,7 +1,11 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/git-runner/version', __FILE__)
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'git-runner/version'
 
 Gem::Specification.new do |gem|
+  gem.name          = "git-runner"
+  gem.version       = GitRunner::VERSION
   gem.authors       = ["James Brooks"]
   gem.email         = ["james@jamesbrooks.net"]
   gem.summary       = "Ruby framework to run tasks after code has been pushed to a Git repository."
@@ -10,9 +14,7 @@ Gem::Specification.new do |gem|
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
-  gem.name          = "git-runner"
   gem.require_paths = ["lib"]
-  gem.version       = GitRunner::VERSION
 
   gem.add_dependency 'session'
 end
