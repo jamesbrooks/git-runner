@@ -25,10 +25,12 @@ module GitRunner
 
 
       rescue GitRunner::Instruction::Failure => ex
+        Text.new_line
         Text.out("Stopping runner, no further instructions will be performed\n")
+        Text.new_line
 
       rescue GitRunner::Command::Failure => ex
-        Text.out("\n")
+        Text.new_line
         Text.out(Text.red("\u2716 Command failed: " + Text.red(ex.result.command)), :heading)
 
         write_error_log do |log|
