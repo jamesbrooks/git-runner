@@ -90,7 +90,10 @@ module GitRunner
 
       def cleanup_deploy_environment
         Text.out("Cleaning deploy environment")
-        execute("rm -rf #{clone_directory}")
+        execute(
+          "rm -rf #{clone_directory}",
+          "cd #{branch.repository_path}"
+        )
       end
 
 
