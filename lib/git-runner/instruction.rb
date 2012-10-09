@@ -1,4 +1,5 @@
-Dir[File.join(File.dirname(__FILE__), 'instructions', '*.rb')].each { |file| require file }
+require 'git-runner/instructions/base'
+require 'git-runner/instructions/display'
 
 module GitRunner
   class Instruction
