@@ -9,6 +9,7 @@ module GitRunner
 
     def run
       begin
+        load_git_runner_gems
         Text.begin
 
         if refs && refs.is_a?(Array)
@@ -58,6 +59,11 @@ module GitRunner
 
 
   private
+    def load_git_runner_gems
+      # Load all additional gems that start with 'git-runner-'
+      Gem::Specification.all.map(&:name).select { |gem| gem =~ /^git-runner-/ }.each { |name| require(name) }
+    end
+
     def write_error_log
       log_directory = File.join(Configuration.tmp_directory, 'logs')
       error_log     = File.join(log_directory, Time.now.strftime("%Y%m%d%H%M%S") + '-error.log')
