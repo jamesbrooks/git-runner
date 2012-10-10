@@ -16,5 +16,5 @@ Gem::Specification.new do |gem|
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.require_paths = ["lib"]
 
-  gem.add_dependency 'session'
+  gem.add_dependency 'session', '>= 3.1.0'
 end
