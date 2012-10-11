@@ -1,39 +1,112 @@
 # Git Runner
 
-git-runner is a ruby framework to implement and run tasks after code has been pushed to a Git repository. It works by invoking `git-runner` through `hooks/post-update` in your remote Git repository.
+Git Runner is a ruby framework to create and run tasks after commits are pushed to a git repository.
 
-[Demonstration Video, Using git-runner to perform automatic deploys](http://ascii.io/a/1349)
+It works by having the git server-side post-update hook (`hooks/post-update`) invoke `git-runner`. Git Runner inspects all of the pushed branches (`refs/heads/*`) and looks for any Git Runner tasks (called instructions) to run. Such an instruction is `Deploy`, which allows for the application to be deployed after a push.
 
-Configuration for git-runner is read from a pre-determined file within the repository (at this time, that file is config/deploy.rb but this will soon be configurable). Any instructions detected are then processed and ran.
+Git Runner instructions are distrubuted as separate gems, see **Available Instructions** below for what instructions are currently available for use.
 
-Instructions are contained within `lib/git-runner/instructions`. By default the instructions contained here and only used for support purposes, real functionality is abstracted into separate gems (at this time the only real instuction is deploy).
+Have a look at this short [demonistration video](http://ascii.io/a/1349) for what it looks like for a user pushing to a Git Runner enabled repository (using `git-runner-deploy`).
+
+
+## Why?
+
+While you certainly could create a ruby script at `hooks/post-update` and have that run after a push with good results, Git Runner provides a robust framework for authoring re-usable tasks that you can share between all of your code repositories and run only when you need to run them.
+
+You could do it all in a script of your own if you like, but Git Runner is there to help you out and make the process less error-prone and more maintainable.
+
+
+## How
+
+After pushing to a git repository various server-side hooks are ran, including a hook named `post-update`. `post-update` needs to run `git-runner` with it's arguments.
+
+Git Runner looks for pushes to any branches (`refs/heads/*`). For each branch it greps the repository for one or more Git Runner instructions within a instruction file.
+
+The instruction file and instruction markers are configurable (see **Configuration** below), by default the configuration file is `config/deploy.rb` and Git Runner instructions begin with `# GitRunner:`, e.g.
+
+```
+# GitRunner: Deploy
+... rest of the file ...
+```
+
+*Instructions can be on any line within the instruction file and multiple instructions are present (instructions are ran in order).*
+
+Any instructions that are found within the instruction file are then processed and ran if able, with any messages being displayed to the user currently pushing the repository.
+
+Any errors encountered will also be displayed with all relevent details being written to a log on the server.
+
+
+## Features
+
+* Robust framework for running tasks (instructions) after updates are made to a repository.
+* Have all of your tasks available to all of your repositories, only use the ones you need on a per repository basis.
+* Activiation through instructions contained within the repository.
+* Branch detection, behave differently for different branches if you like.
+* Simple authoring of additional instructions.
+* Error handling, notification and logging.
+
+
+## Available Instructions
+
+Name                                                       | Gem               | Description
+---------------------------------------------------------- | ----------------- | ---------------------------------------
+[Deploy](https://github.com/JamesBrooks/git-runner-deploy) | git-runner-deploy | Application deployment using capistrano
+
 
 ## Installation
 
-    $ gem install git-runner
-
-## Install any additional modules (you'll want to do this to get any real functionality)
-
-### Deploy using Capistrano
-[https://github.com/JamesBrooks/git-runner-deploy](https://github.com/JamesBrooks/git-runner-deploy)
-
-    gem install git-runner-deploy
+This section needs a lot more fleshing out as installation overly trivial. The main thing to worry about is making sure that `hooks/post-update` in each of your repositories is able to run `git-runner` (and pass it's arguments on).
 
 
-## Usage
+#### Install the git-runner
 
-Symlink `hooks/post-update` to `git-runner`, or if `post-update` is already in use modify it to run `git-runner` with the arguments supplied to the hook.
+Install the gem and any other additional instruction gems that you need, for example if we want Git Runner with capistrano deploy support:
+
+```
+gem install git-runner
+gem install git-runner-deloy
+```
+
+#### Hook up git-runner to fire on hooks/post-update
+
+There are a few ways to accomplish this, such as directly symlinking `hooks/post-update` to the executable path for git-runner. Currently I prefer the following approach of creating a script that loads rubygems and git-runner + calls git runner. The following is the contents of my `hooks/post-update` file:
+
+```
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'git-runner'
+
+GitRunner::Base.new(ARGV).run
+```
+
 
 ## Configuration
 
-Configuration can be overwritten through a YAML file at either `/etc/git-runner.yml` or `$HOME/.git-runner.yml`. The current configuration options are:
+Configuration can be changed through a YAML file at either `/etc/git-runner.yml` or `$HOME/.git-runner.yml`. The default configuration settings are:
 
-  * **git_executable** (default: '/usr/bin/env git')
-  * **instruction_file** (default: 'config/deploy.rb')
-  * **instruction_prefix** (default: '# GitRunner:')
-  * **tmp_directory** (default: '/tmp/git-runner')
+Option             | Default Value    | Description
+------------------ | ---------------- | --------------------------------------------------------------------------
+git_executable     | /usr/bin/env git | Location of the git executable to use
+instruction_file   | config/deploy.rb | Where to look for Git Runner instructions within each repository
+instruction_prefix | # GitRunner:     | What Git Runner instructions will be prefixed with in the instruction file
+tmp_directory      | /tmp/git-runner  | Working directory for git-runner
 
-## TODO
+
+## TODOs
+
+* Support to monitor a command (stdout and stderr) as the command is running, not just at the end.
+* Instruction file path is globally set, make this overwritable on a per-repository basis?
+* Instruction prefix is globally set, make this overwritable on a per-repository basis?
+* Have core functionality fire useful hooks.
+
+
+## Support
+
+Check out [GitHub Issues](https://github.com/JamesBrooks/git-runner/issues) to see if anyone else has had the same problem you have, or create a new issue.
+
+Also feel free to contact me directly (james at jamesbrooks dot net) for non-support comments or support of a more sensitive nature.
+
 
 ## Contributing
 
