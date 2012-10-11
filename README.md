@@ -1,5 +1,8 @@
 # Git Runner
 
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/JamesBrooks/git-runner)
+
+
 Git Runner is a ruby framework to create and run tasks after commits are pushed to a git repository.
 
 It works by having the git server-side post-update hook (`hooks/post-update`) invoke `git-runner`. Git Runner inspects all of the pushed branches (`refs/heads/*`) and looks for any Git Runner tasks (called instructions) to run. Such an instruction is `Deploy`, which allows for the application to be deployed after a push.
@@ -107,6 +110,7 @@ tmp_directory      | /tmp/git-runner  | Working directory for git-runner
 * Instruction prefix is globally set, make this overwritable on a per-repository basis?
 * Have core functionality fire useful hooks.
 * Improve the output/text library, it can work better!
+* Simplify Base#run (CodeClimate)
 
 
 ## Support
