@@ -11,6 +11,13 @@ Have a look at this short [demonistration video](http://ascii.io/a/1349) for wha
 
 ## Why?
 
+#### Origins
+
+Git Runner originated from a need to simply the deployment process (capistrano) within my organisation for people who don't have their environments setup with ruby and the required gems. I wanted to make the process work for even those who are using GUI git clients.
+
+
+#### Wouldn't a simple script do the job?
+
 While you certainly could create a ruby script at `hooks/post-update` and have that run after a push with good results, Git Runner provides a robust framework for authoring re-usable tasks that you can share between all of your code repositories and run only when you need to run them.
 
 You could do it all in a script of your own if you like, but Git Runner is there to help you out and make the process less error-prone and more maintainable.
