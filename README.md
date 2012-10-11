@@ -106,6 +106,7 @@ tmp_directory      | /tmp/git-runner  | Working directory for git-runner
 * Instruction file path is globally set, make this overwritable on a per-repository basis?
 * Instruction prefix is globally set, make this overwritable on a per-repository basis?
 * Have core functionality fire useful hooks.
+* Improve the output/text library, it can work better!
 
 
 ## Support
