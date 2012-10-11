@@ -74,7 +74,7 @@ Install the gem and any other additional instruction gems that you need, for exa
 
 ```
 gem install git-runner
-gem install git-runner-deloy
+gem install git-runner-deploy
 ```
 
 #### Hook up git-runner to fire on hooks/post-update
