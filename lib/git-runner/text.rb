@@ -1,5 +1,7 @@
 module GitRunner
-  class Text
+  module Text
+    extend self
+
     COLOR_START = "\033["
     COLOR_END   = "m"
     COLOR_RESET = "#{COLOR_START}0#{COLOR_END}"
@@ -22,45 +24,53 @@ module GitRunner
     }
 
 
-    class << self
-      def begin
-        STDOUT.sync = true
-        print("\e[1G       \e[1G")
-      end
+    def begin
+      STDOUT.sync = true
+      print("\e[1G       \e[1G")
+    end
 
-      def finish
-        print("\n")
-      end
+    def finish
+      print("\n")
+    end
 
-      def out(str, style=nil)
-        # Ensure that new lines overwrite the default 'remote: ' text
-        str = str.gsub("\n", "\n\e[1G#{padding(nil)}")
+    def out(str, style=nil)
+      # Ensure that new lines overwrite the default 'remote: ' text
+      str = str.gsub("\n", "\n\e[1G#{padding(nil)}")
 
-        print "\n\e[1G#{padding(style).ljust(7)}#{str}"
-      end
+      print "\n\e[1G#{padding(style).ljust(7 + (@indentation || 0))}#{str}"
+    end
 
-      def new_line
-        out('')
-      end
+    def new_line
+      out('')
+    end
 
-      # Color methods
-      COLORS.each do |color, code|
-        class_eval <<-EOF
-          def #{color}(str, style=:normal)
-            "#{COLOR_START}\#{STYLES[style]};#{code}#{COLOR_END}\#{str}#{COLOR_RESET}"
-          end
-        EOF
-      end
+    def indent(spaces=2)
+      @indentation ||= 0
+      @indentation  += spaces
 
+      yield
 
-    private
-      def padding(style)
-        case style
-        when :heading
-          '----->'
-        else
-          ''
+      @indentation -= spaces
+      Text.new_line
+    end
+
+    # Color methods
+    COLORS.each do |color, code|
+      class_eval <<-EOF
+        def #{color}(str, style=:normal)
+          "#{COLOR_START}\#{STYLES[style]};#{code}#{COLOR_END}\#{str}#{COLOR_RESET}"
         end
+      EOF
+    end
+
+
+  private
+    def padding(style)
+      case style
+      when :heading
+        '----->'
+      else
+        ''
       end
     end
   end
