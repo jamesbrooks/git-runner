@@ -26,31 +26,13 @@ module GitRunner
 
 
       rescue GitRunner::Instruction::Failure => ex
-        Text.new_line
-        Text.out("Stopping runner, no further instructions will be performed\n")
-        Text.new_line
+        handle_instruction_failure_exception(ex)
 
       rescue GitRunner::Command::Failure => ex
-        Text.new_line
-        Text.out(Text.red("\u2716 Command failed: " + Text.red(ex.result.command)), :heading)
-
-        write_error_log do |log|
-          log << Command.history_to_s
-        end
-
-        Text.new_line
+        handle_command_failure_exception(ex)
 
       rescue Exception => ex
-        Text.new_line
-        Text.out(Text.red("\u2716 Unknown exception occured: #{ex}"), :heading)
-
-        write_error_log do |log|
-          log << Command.history_to_s
-          log << ex.message + "\n"
-          log << ex.backtrace.map { |line| "    #{line}\n" }.join
-        end
-
-        Text.new_line
+        handle_unknown_exception(ex)
 
       ensure
         Text.finish
@@ -62,6 +44,36 @@ module GitRunner
     def load_git_runner_gems
       # Load all additional gems that start with 'git-runner-'
       Gem::Specification._all.map(&:name).select { |gem| gem =~ /^git-runner-/ }.each { |name| require(name) }
+    end
+
+    def handle_instruction_failure_exception(ex)
+      Text.new_line
+      Text.out("Stopping runner, no further instructions will be performed\n")
+      Text.new_line
+    end
+
+    def handle_command_failure_exception(ex)
+      Text.new_line
+      Text.out(Text.red("\u2716 Command failed: " + Text.red(ex.result.command)), :heading)
+
+      write_error_log do |log|
+        log << Command.history_to_s
+      end
+
+      Text.new_line
+    end
+
+    def handle_unknown_exception(ex)
+      Text.new_line
+      Text.out(Text.red("\u2716 Unknown exception occured: #{ex}"), :heading)
+
+      write_error_log do |log|
+        log << Command.history_to_s
+        log << ex.message + "\n"
+        log << ex.backtrace.map { |line| "    #{line}\n" }.join
+      end
+
+      Text.new_line
     end
 
     def write_error_log
