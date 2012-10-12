@@ -105,6 +105,7 @@ tmp_directory      | /tmp/git-runner  | Working directory for git-runner
 
 ## TODOs
 
+* TESTS!
 * Support to monitor a command (stdout and stderr) as the command is running, not just at the end.
 * Instruction file path is globally set, make this overwritable on a per-repository basis?
 * Instruction prefix is globally set, make this overwritable on a per-repository basis?
