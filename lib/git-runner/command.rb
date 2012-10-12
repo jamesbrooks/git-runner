@@ -25,9 +25,7 @@ module GitRunner
     end
 
     def history_to_s
-      history.map do |result|
-        "Status: #{result.status}; Command: #{result.command}\n#{result.out}\n--------------------\n"
-      end.join
+      history.map(&:to_s).join("\n#{'-' * 20}\n")
     end
 
 
@@ -57,7 +55,12 @@ module GitRunner
       def failure?
         !success?
       end
+
+      def to_s
+        "Status: #{status}; Command: #{command}\n#{out}"
+      end
     end
+
 
     class Failure < StandardError
       attr_accessor :result
