@@ -6,6 +6,13 @@ module GitRunner
 
 
     def execute(*commands)
+      opts = commands.last.is_a?(Hash) ? commands.pop : {}
+
+      # Set session callback procs
+      session.outproc = opts[:outproc]
+      session.errproc = opts[:errproc]
+
+      # Cycle through and run commands
       commands.each do |command|
         out = StringIO::new
 
@@ -17,6 +24,11 @@ module GitRunner
         raise Failure.new(result) if result.failure?
       end
 
+      # Clear session callback procs
+      session.outproc = nil
+      session.errproc = nil
+
+      # Return full output of the last ran command (should this be all commands perhaps?)
       history.last.out
     end
 
