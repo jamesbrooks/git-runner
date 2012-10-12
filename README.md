@@ -63,6 +63,14 @@ Name                                                       | Gem               |
 [Deploy](https://github.com/JamesBrooks/git-runner-deploy) | git-runner-deploy | Application deployment using capistrano
 
 
+## Requirements
+
+* git
+* Ruby 1.9
+	* Developed and "tested" using 1.9.3 (formal testing incoming soon).
+	* It *might* work with 1.8.7 if `Object#tap` is patched in.
+
+
 ## Installation
 
 This section needs a lot more fleshing out as installation overly trivial. The main thing to worry about is making sure that `hooks/post-update` in each of your repositories is able to run `git-runner` (and pass it's arguments on).
