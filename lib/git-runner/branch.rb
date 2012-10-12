@@ -32,10 +32,9 @@ module GitRunner
 
       # Process the output to generate instructions
       output.split("\n").map do |line|
-        instruction        = Instruction.from_raw(line)
-        instruction.branch = self
-
-        instruction
+        Instruction.from_raw(line).tap do |instruction|
+          instruction.branch = self
+        end
       end
     end
   end
