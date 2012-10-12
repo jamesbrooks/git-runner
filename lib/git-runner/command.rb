@@ -6,6 +6,7 @@ module GitRunner
 
 
     def execute(*commands)
+      # Extract options (if any)
       opts = commands.last.is_a?(Hash) ? commands.pop : {}
 
       # Set session callback procs
@@ -13,16 +14,7 @@ module GitRunner
       session.errproc = opts[:errproc]
 
       # Cycle through and run commands
-      commands.each do |command|
-        out = StringIO::new
-
-        session.execute command, :stdout => out, :stderr => out
-
-        result = Result.new(command, out.string, session.exit_status)
-        history << result
-
-        raise Failure.new(result) if result.failure?
-      end
+      execute_commands(commands)
 
       # Clear session callback procs
       session.outproc = nil
@@ -42,6 +34,22 @@ module GitRunner
 
 
   private
+    def execute_commands(commands)
+      commands.each do |command|
+        out = StringIO::new
+
+        # Run the command through the active shell session
+        session.execute(command, :stdout => out, :stderr => out)
+
+        # Construct result and store is as part of the command history
+        result = Result.new(command, out.string, session.exit_status)
+        history << result
+
+        # Bubble up a failure exception if the command failed
+        raise Failure.new(result) if result.failure?
+      end
+    end
+
     def session
       @session ||= Session::Bash::Login.new
     end
