@@ -1,6 +1,6 @@
 module GitRunner
   class Base
-    attr_accessor :refs
+    attr_accessor :refs, :current_branch
 
 
     def initialize(refs=[])
@@ -14,7 +14,6 @@ module GitRunner
         load_git_runner_gems
         process_refs
         join_threads
-
 
       rescue GitRunner::Instruction::Failure => ex
         handle_instruction_failure_exception(ex)
@@ -44,9 +43,9 @@ module GitRunner
         # Only process HEAD references
         refs.select { |str| str =~ /^refs\/heads\// }.each do |ref|
           branch_name = ref.split('/').last
-          branch      = Branch.new(repository_path, branch_name)
 
-          branch.run
+          self.current_branch = Branch.new(repository_path, branch_name)
+          self.current_branch.run
         end
       end
     end
@@ -92,6 +91,11 @@ module GitRunner
       Command.execute("mkdir -p #{log_directory}") unless Dir.exists?(log_directory)
 
       File.open(error_log, 'w') { |file| yield(file) }
+
+      GitRunner::Hooks.fire(:after_write_error_log, {
+        base:     self,
+        log_file: error_log
+      })
 
       Text.out("An error log has been created: #{error_log}")
       error_log
