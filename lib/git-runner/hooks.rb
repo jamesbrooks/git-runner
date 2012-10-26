@@ -12,8 +12,8 @@ module GitRunner
         raise InvalidCallable.new("Supplied callable is not callable, should respond to #call and #arity")
       end
 
-      if callable.arity != 1
-        raise InvalidCallable.new("Supplied callable takes #{callable.arity} argument(s), should accept only 1.")
+      if callable.arity > 1
+        raise InvalidCallable.new("Supplied callable takes #{callable.arity} argument(s), should accept either 1 or 0.")
       end
 
       registrations[name] << callable
@@ -21,7 +21,14 @@ module GitRunner
 
     def fire(name, data=nil)
       return unless registrations.keys.include?(name)
-      registrations[name].each { |callable| callable.call(data) }
+
+      registrations[name].each do |callable|
+        if callable.arity == 1
+          callable.call(data)
+        else
+          callable.call
+        end
+      end
     end
   end
 end
