@@ -9,20 +9,10 @@ module GitRunner
 
     def run
       begin
-        load_git_runner_gems
         Text.begin
 
-        if refs && refs.is_a?(Array)
-          repository_path = Dir.pwd
-
-          # Only process HEAD references
-          refs.select { |str| str =~ /^refs\/heads\// }.each do |ref|
-            branch_name = ref.split('/').last
-            branch      = Branch.new(repository_path, branch_name)
-
-            branch.run
-          end
-        end
+        load_git_runner_gems
+        process_refs
 
 
       rescue GitRunner::Instruction::Failure => ex
@@ -44,6 +34,20 @@ module GitRunner
     def load_git_runner_gems
       # Load all additional gems that start with 'git-runner-'
       Gem::Specification._all.map(&:name).select { |gem| gem =~ /^git-runner-/ }.each { |name| require(name) }
+    end
+
+    def process_refs
+      if refs && refs.is_a?(Array)
+        repository_path = Dir.pwd
+
+        # Only process HEAD references
+        refs.select { |str| str =~ /^refs\/heads\// }.each do |ref|
+          branch_name = ref.split('/').last
+          branch      = Branch.new(repository_path, branch_name)
+
+          branch.run
+        end
+      end
     end
 
     def handle_instruction_failure_exception(ex)
