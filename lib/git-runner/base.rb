@@ -13,6 +13,7 @@ module GitRunner
 
         load_git_runner_gems
         process_refs
+        join_threads
 
 
       rescue GitRunner::Instruction::Failure => ex
@@ -48,6 +49,10 @@ module GitRunner
           branch.run
         end
       end
+    end
+
+    def join_threads
+      GitRunner::Threading.join
     end
 
     def handle_instruction_failure_exception(ex)

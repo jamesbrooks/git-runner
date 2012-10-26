@@ -5,6 +5,7 @@ require "git-runner/configuration"
 require "git-runner/hooks"
 require "git-runner/instruction"
 require "git-runner/text"
+require "git-runner/threading"
 require "git-runner/version"
 
 module GitRunner
