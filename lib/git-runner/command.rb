@@ -36,17 +36,27 @@ module GitRunner
   private
     def execute_commands(commands)
       commands.each do |command|
-        out = StringIO::new
+        begin
+          out = StringIO::new
 
-        # Run the command through the active shell session
-        session.execute(command, :stdout => out, :stderr => out)
+          # Run the command through the active shell session
+          session.execute(command, :stdout => out, :stderr => out)
 
-        # Construct result and store is as part of the command history
-        result = Result.new(command, out.string, session.exit_status)
-        history << result
+          # Construct result and store is as part of the command history
+          result = Result.new(command, out.string, session.exit_status)
+          history << result
 
-        # Bubble up a failure exception if the command failed
-        raise Failure.new(result) if result.failure?
+          # Bubble up a failure exception if the command failed
+          raise Failure.new(result) if result.failure?
+
+
+        rescue Exception => ex
+          unless ex.is_a?(GitRunner::Command::Failure)
+            history << (result = Result.new(command, 'EXCEPTION OCCURRED', '-1'))
+          end
+
+          raise ex
+        end
       end
     end
 
