@@ -12,6 +12,7 @@ module GitRunner
         Text.begin
 
         load_git_runner_gems
+        prepare_environment
         process_refs
 
 
@@ -35,6 +36,10 @@ module GitRunner
     def load_git_runner_gems
       # Load all additional gems that start with 'git-runner-'
       Gem::Specification._all.map(&:name).select { |gem| gem =~ /^git-runner-/ }.each { |name| require(name) }
+    end
+
+    def prepare_environment
+      GitRunner::Command.execute('unset GIT_DIR')
     end
 
     def process_refs
