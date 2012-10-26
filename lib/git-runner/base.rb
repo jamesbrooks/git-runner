@@ -13,7 +13,7 @@ module GitRunner
 
         load_git_runner_gems
         process_refs
-        join_threads
+
 
       rescue GitRunner::Instruction::Failure => ex
         handle_instruction_failure_exception(ex)
@@ -25,6 +25,7 @@ module GitRunner
         handle_unknown_exception(ex)
 
       ensure
+        join_threads
         Text.finish
       end
     end
