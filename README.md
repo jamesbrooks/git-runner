@@ -9,14 +9,14 @@ It works by having the git server-side post-update hook (`hooks/post-update`) in
 
 Git Runner instructions are distrubuted as separate gems, see **Available Instructions** below for what instructions are currently available for use.
 
-Have a look at this short [demonistration video](http://ascii.io/a/1349) for what it looks like for a user pushing to a Git Runner enabled repository (using `git-runner-deploy`).
+Have a look at this short [demonstration video](http://ascii.io/a/1349) for what it looks like for a user pushing to a Git Runner enabled repository (using `git-runner-deploy`).
 
 
 ## Why?
 
 #### Origins
 
-Git Runner originated from a need to simply the deployment process (capistrano) within my organisation for people who don't have their environments setup with ruby and the required gems. I wanted to make the process work for even those who are using GUI git clients.
+Git Runner originated from a need to simplify the deployment process (capistrano) within my organisation for people who don't have their environments setup with ruby and the required gems. I wanted to make the process work for even those who are using GUI git clients.
 
 
 #### Wouldn't a simple script do the job?
