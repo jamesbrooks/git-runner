@@ -24,6 +24,9 @@ module GitRunner
 
   private
     def extract_instructions
+      # Check if the instructions file exists
+      return unless File.exist?(File.join(repository_path, Configuration.instruction_file))
+
       # Use git to grep the current branch for instruction lines within the specific instruction file
       output = Command.execute(
         "cd #{repository_path}",
