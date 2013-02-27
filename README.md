@@ -1,7 +1,8 @@
 # Git Runner
 
-[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/JamesBrooks/git-runner)
-
+[![Code Climate](https://codeclimate.com/github/JamesBrooks/git-runner.png)](https://codeclimate.com/github/JamesBrooks/git-runner)
+[![Gem Version](https://badge.fury.io/rb/git-runner.png)](http://badge.fury.io/rb/git-runner)
+[![Dependency Status](https://gemnasium.com/JamesBrooks/git-runner.png)](https://gemnasium.com/JamesBrooks/git-runner)
 
 Git Runner is a ruby framework to create and run tasks after commits are pushed to a git repository.
 
