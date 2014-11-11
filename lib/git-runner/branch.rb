@@ -40,6 +40,9 @@ module GitRunner
         rescue
         end
       end
+
+    rescue
+      []
     end
   end
 end
